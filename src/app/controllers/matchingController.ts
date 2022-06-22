@@ -15,14 +15,7 @@ export class MatchingController implements L.RouteCollection {
         home.webSocket(this.onUpgrade)
     }
 
-    private readonly index = async (req: L.Request): Promise<L.Response> => {
-        // return { users: [
-        //         {id: 'afe', name: 'こんにちは'},
-        //         {id: 'ww', name: 'こんばんは'},
-        //         {id: 'dw', name: 'おはよう'},
-        //     ]}
-        console.log('get headers', req.denoRequest.headers)
-        console.log(this.users.all())
+    private readonly index = async (_req: L.Request): Promise<L.Response> => {
         return { users: this.users.all() }
     }
 
@@ -41,7 +34,6 @@ export class MatchingController implements L.RouteCollection {
     }
 
     private readonly onUpgrade = async (req: L.Request, ws: L.WebSocket): Promise<void> => {
-        console.log('headers', req.denoRequest.headers)
         const newUser = this.newUser(req, ws)
         req.sessions.data['uuid'] = ws.id
         this.users = this.users.inned(newUser)
@@ -52,7 +44,6 @@ export class MatchingController implements L.RouteCollection {
     }
 
     private readonly newUser = (req: L.Request, ws: L.WebSocket): MatchingUser => {
-        console.log('session', req.sessions.data)
         return new MatchingUser(req.sessions.data['username'], ws)
     }
 
@@ -64,6 +55,15 @@ export class MatchingController implements L.RouteCollection {
 
     private readonly onText = async (ws: L.WebSocket, text: string): Promise<void> => {
         const json: { id: string, reply: 'accept' | 'deny' } = JSON.parse(text)
-        this.users.replied(json.id, json.reply)
+
+        if (json.reply === 'deny') {
+            this.users.denied(json.id)
+            return
+        }
+
+        const roomId = crypto.randomUUID()
+        const wsText = JSON.stringify({ type: 'match', room: roomId })
+        ws.send(wsText)
+        this.users.accepted(json.id, wsText)
     }
 }

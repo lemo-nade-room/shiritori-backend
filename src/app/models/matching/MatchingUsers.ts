@@ -25,10 +25,14 @@ export class MatchingUsers {
         })
     }
 
-    public readonly replied = (id: string, reply: 'accept' | 'deny') => {
-        const type = reply === 'accept' ? 'match' : 'denied'
+    public readonly denied = (id: string) => {
         const user = this.users.find(user => user.uuid === id)
-        user?.send(JSON.stringify({ type: type }))
+        user?.send(JSON.stringify({ type: 'denied' }))
+    }
+
+    public readonly accepted = (id: string, wsText: string) => {
+        const user = this.users.find(user => user.uuid === id)
+        user?.send(wsText)
     }
 
     public readonly offer = (fromId: string, id: string) => {

@@ -2,6 +2,7 @@ import * as L from '../../../../Lapor/lapor.ts'
 import { LoginController } from "./controllers/loginController.ts"
 import { AuthMiddleware } from "./middlewares/authMiddleware.ts"
 import { MatchingController } from "./controllers/matchingController.ts"
+import { RegisterController } from "./controllers/registerController.ts"
 
 const routes = (app: L.Application): void => {
     app.grouped('**')
@@ -12,8 +13,8 @@ const routes = (app: L.Application): void => {
     api.register(new LoginController())
 
     const auth = api.grouped(new AuthMiddleware())
-    // auth.register(new HomeController())
     auth.register(new MatchingController())
+    auth.register(new RegisterController())
 }
 
 class LogMiddleware implements L.Middleware {
