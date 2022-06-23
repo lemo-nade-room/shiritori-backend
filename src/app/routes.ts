@@ -39,7 +39,7 @@ const routes = (app: L.Application): void => {
     const api = app.grouped('api').grouped(new LogMiddleware())
     api.register(new LoginController())
 
-    const auth = api.grouped(new AuthMiddleware())
+    const auth = api//.grouped(new AuthMiddleware())
 
     const roomRecordRepository = new MemoryRoomRecordRepository()
     auth.register(new MatchingController(roomRecordRepository))
