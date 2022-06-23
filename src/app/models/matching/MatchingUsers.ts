@@ -14,9 +14,11 @@ export class MatchingUsers {
 
     public readonly outed = (ws: L.WebSocket): MatchingUsers => {
         this.broadcast(JSON.stringify({ type: 'outed', id: ws.id }))
-        return new MatchingUsers(
-            this.users.filter(user => user.uuid !== ws.id)
-        )
+        return this.removed(ws.id)
+    }
+
+    public readonly removed = (id: string): MatchingUsers => {
+        return new MatchingUsers(this.users.filter(user => user.uuid !== id))
     }
 
     public readonly broadcast = (text: string): void => {
@@ -30,9 +32,10 @@ export class MatchingUsers {
         user?.send(JSON.stringify({ type: 'denied' }))
     }
 
+    public readonly find = (id: string): MatchingUser | undefined => this.users.find(user => user.uuid === id)
+
     public readonly accepted = (id: string, wsText: string) => {
-        const user = this.users.find(user => user.uuid === id)
-        user?.send(wsText)
+        this.find(id)?.send(wsText)
     }
 
     public readonly offer = (fromId: string, id: string) => {

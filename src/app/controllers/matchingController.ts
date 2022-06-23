@@ -1,11 +1,16 @@
 import * as L from '../../../../../Lapor/lapor.ts'
 import { MatchingUsers } from "../models/matching/MatchingUsers.ts"
 import { MatchingUser } from "../models/matching/MatchingUser.ts"
+import { RoomRecordRepository } from "../repositories/roomRecordRepository.ts"
 
 
 export class MatchingController implements L.RouteCollection {
 
     private users: MatchingUsers = new MatchingUsers([])
+
+    public constructor(
+        private readonly roomRecordRepository: RoomRecordRepository
+    ) {}
 
     public readonly boot = (routes: L.RoutesBuilder): void => {
         const home = routes.grouped('matching')
@@ -62,8 +67,12 @@ export class MatchingController implements L.RouteCollection {
         }
 
         const roomId = crypto.randomUUID()
+        this.roomRecordRepository.add(roomId, '初期値', 'しりとり')
         const wsText = JSON.stringify({ type: 'match', room: roomId })
         ws.send(wsText)
         this.users.accepted(json.id, wsText)
+
+        this.users.outed(ws)
+        this.users.removed(json.id)
     }
 }

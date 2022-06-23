@@ -3,6 +3,8 @@ import { LoginController } from "./controllers/loginController.ts"
 import { AuthMiddleware } from "./middlewares/authMiddleware.ts"
 import { MatchingController } from "./controllers/matchingController.ts"
 import { RegisterController } from "./controllers/registerController.ts"
+import { GameController } from "./controllers/gameController.ts"
+import { MemoryRoomRecordRepository } from "./repositories/inmemory/memoryRoomRecordRepository.ts"
 
 const routes = (app: L.Application): void => {
     app.grouped('**')
@@ -13,8 +15,11 @@ const routes = (app: L.Application): void => {
     api.register(new LoginController())
 
     const auth = api.grouped(new AuthMiddleware())
-    auth.register(new MatchingController())
+
+    const roomRecordRepository = new MemoryRoomRecordRepository()
+    auth.register(new MatchingController(roomRecordRepository))
     auth.register(new RegisterController())
+    auth.register(new GameController(roomRecordRepository))
 }
 
 class LogMiddleware implements L.Middleware {
