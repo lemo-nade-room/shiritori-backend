@@ -41,12 +41,13 @@ export class RoomRecords {
     private readonly atLast = (index: number = 1) => this.records[this.records.length - index]
 
     public readonly judged = (): boolean => {
-        if (this.records.length <= 2) return false
+        if (this.records.length === 1) return false
         return this.latestRecord().isOut(this.atLast(2))
     }
 
     public readonly winner = (): string => {
         if (!this.judged()) return ''
-        return this.atLast(2).playerName
+        const winner = this.atLast(2).playerName
+        return winner === '初期値' ? '一人負け' : winner
     }
 }

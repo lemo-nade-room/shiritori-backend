@@ -1,5 +1,5 @@
 import { MatchingUser } from "./MatchingUser.ts"
-import * as L from '../../../../../../Lapor/lapor.ts'
+import * as L from 'https://github.com/lemo-nade-room/Lapor/raw/main/lapor.ts'
 
 export class MatchingUsers {
 

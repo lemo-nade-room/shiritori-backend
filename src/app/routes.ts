@@ -1,4 +1,4 @@
-import * as L from '../../../../Lapor/lapor.ts'
+import * as L from 'https://github.com/lemo-nade-room/Lapor/raw/main/lapor.ts'
 import { LoginController } from "./controllers/loginController.ts"
 import { AuthMiddleware } from "./middlewares/authMiddleware.ts"
 import { MatchingController } from "./controllers/matchingController.ts"

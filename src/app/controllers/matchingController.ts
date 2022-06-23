@@ -1,4 +1,4 @@
-import * as L from '../../../../../Lapor/lapor.ts'
+import * as L from 'https://github.com/lemo-nade-room/Lapor/raw/main/lapor.ts'
 import { MatchingUsers } from "../models/matching/MatchingUsers.ts"
 import { MatchingUser } from "../models/matching/MatchingUser.ts"
 import { RoomRecordRepository } from "../repositories/roomRecordRepository.ts"
