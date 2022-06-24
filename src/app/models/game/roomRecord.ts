@@ -2,7 +2,7 @@ export class RoomRecord {
 
     public constructor(
         public readonly playerName: string,
-        private readonly text: string,
+        public readonly text: string,
         private readonly shoutAt: Date,
     ) {}
 

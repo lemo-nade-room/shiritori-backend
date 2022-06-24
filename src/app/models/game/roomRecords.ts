@@ -42,7 +42,14 @@ export class RoomRecords {
 
     public readonly judged = (): boolean => {
         if (this.records.length === 1) return false
+        if (this.duplicateText()) return true
         return this.latestRecord().isOut(this.atLast(2))
+    }
+
+    private readonly duplicateText = (): boolean => {
+        return this.records
+            .slice(0, this.records.length - 1)
+            .some(record => record.isText(this.latestRecord().text))
     }
 
     public readonly winner = (): string => {

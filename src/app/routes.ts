@@ -21,13 +21,13 @@ const routes = (app: L.Application): void => {
         return { type: 'responsible', response: () =>  new Response(file, { headers: {"Content-Type": "image/x-icon"}})}
     })
 
-    app.get(['assets', 'index.e1a413ba.css'], async () => {
-        const res = await fileResponse('assets/index.e1a413ba.css', 'css')
+    app.get(['assets', 'index.bf3fd607.css'], async () => {
+        const res = await fileResponse('assets/index.bf3fd607.css', 'css')
         return { type: 'responsible', response: () =>  res}
     })
 
-    app.get(['assets', 'index.fcbde9b8.js'], async () => {
-        const res = await fileResponse('assets/index.fcbde9b8.js', 'javascript')
+    app.get(['assets', 'index.95151ac1.js'], async () => {
+        const res = await fileResponse('assets/index.95151ac1.js', 'javascript')
         return { type: 'responsible', response: () =>  res}
     })
 
